@@ -56,4 +56,15 @@ export class UsersService {
       }
     }
   }
+
+  async getUserId(req): Promise<number> {
+    const { userId } = req.user;
+    const userCheck = await this.userModel.findOne({
+      where: {
+        id: userId,
+      },
+    });
+
+    return userCheck.id;
+  }
 }
