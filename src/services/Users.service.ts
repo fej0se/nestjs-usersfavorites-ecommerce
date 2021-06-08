@@ -15,7 +15,7 @@ export class UsersService {
   async create(user: User) {
     const { username, email } = user;
     try {
-      const userExist = await this.userModel.findOne({
+      const userExist: User = await this.userModel.findOne({
         where: {
           username,
           email,
@@ -39,15 +39,19 @@ export class UsersService {
         username,
       },
     });
-
     if (!findUser) {
-      console.log('User not found');
+      throw new UnauthorizedException();
     } else {
       const passwordMatch = bcrypt.compareSync(password, findUser.password);
       if (passwordMatch) {
+        findUser.update({
+          isLoggedIn: true,
+        });
+
         const payload = {
           userId: findUser.id,
         };
+
         return {
           access_token: this.jwtService.sign(payload),
         };
@@ -57,11 +61,38 @@ export class UsersService {
     }
   }
 
-  async getUserId(req): Promise<number> {
-    const { userId } = req.user;
-    const userCheck = await this.userModel.findOne({
+  async logout(req): Promise<void> {
+    const id = req.user.userId;
+    const user: User = await this.userModel.findOne({
       where: {
-        id: userId,
+        id,
+      },
+    });
+
+    user.update({ isLoggedIn: false });
+  }
+
+  async getStatus(req): Promise<any> {
+    const id = req.user.userId;
+    const iat = req.user.iat;
+    const user: User = await this.userModel.findOne({
+      where: {
+        id,
+      },
+    });
+    const dbData = Math.floor(user.updatedAt.getTime() / 1000);
+    if (dbData > iat) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async getUserId(req): Promise<number> {
+    const id = req.user.userId;
+    const userCheck: User = await this.userModel.findOne({
+      where: {
+        id,
       },
     });
 

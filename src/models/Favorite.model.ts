@@ -1,12 +1,20 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { User } from './User.model';
 
 @Table
 export class Favorite extends Model<Favorite> {
+  @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
     references: {
-      model: 'User',
+      model: 'Users',
       key: 'id',
     },
   })

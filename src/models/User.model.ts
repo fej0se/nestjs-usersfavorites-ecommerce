@@ -1,7 +1,5 @@
 import {
-  AfterFind,
   BeforeCreate,
-  BeforeUpdate,
   Column,
   DataType,
   Model,
@@ -29,8 +27,14 @@ export class User extends Model<User> {
   })
   email: string;
 
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  })
+  isLoggedIn: boolean;
+
   @BeforeCreate
-  @BeforeUpdate
   static hashPassword(user: User) {
     if (user.password) {
       user.password = bcrypt.hashSync(user.password, 10);
