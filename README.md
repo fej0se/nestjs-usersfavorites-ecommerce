@@ -22,52 +22,182 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Projeto: Ecommerce service to fav/unfav
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+# Introdução
+Essa api foi criada como um serviço auxiliar externo de uma loja, se integra a api principal de produtos, tem um controle de usuários independente do serviço principal, e possibilida que o cliente favorite e desfavorite produtos, após 2 minutos da ação é enviado um e-mail ao cliente com sua lista atual de produtos favoritos.
 
-```bash
-$ npm install
-```
-
-## Running the app
+# Como usar
+Para usar esse projeto, deve clonar o repositório e fazer os seguintes comandos:
 
 ```bash
-# development
-$ npm run start
+# instalar as dependencias 
+$ yarn install
 
-# watch mode
-$ npm run start:dev
+#rodar o projeto
+$ yarn start
 
-# production mode
-$ npm run start:prod
 ```
 
-## Test
 
-```bash
-# unit tests
-$ npm run test
+# Autenticação
+Após logado é necessário passar o token que foi fornecido pela rota de login como um Bearer token.
 
-# e2e tests
-$ npm run test:e2e
+# Error Codes
+Os códigos de erro são:
 
-# test coverage
-$ npm run test:cov
+1. Caso usuário tente acessar as rotas de favoritos com um token deslogado ou inválido
+2. Caso passe um usuário invalido para login
+
+```JSON
+{
+  "statusCode": 401,
+  "message": "Unauthorized"
+}
+````
+
+3. Caso tente registrar um novo usuário com um e-mail e/ou username já cadastrado
+
+```JSON 
+{
+  "statusCode": 422,
+  "message": "Unprocessable Entity"
+}
+````
+
+4. Caso tente desfavoritar um produto que não esteja favoritado
+
+```JSON
+{
+  "statusCode": 404,
+  "message": "Not Found"
+}
 ```
 
-## Support
+5. Caso tente favoritar um porduto já favoritado
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```JSON 
+{
+  "statusCode": 500,
+  "message": "Internal server error"
+}
+````
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
+## End-point: http://localhost:3333/favs/:product_id
+### Descrição: Verifica se produto é favorito 
+Method: GET
+>```
+>http://localhost:3333/favs/:product_id
+>```
 
-Nest is [MIT licensed](LICENSE).
+
+### 🔑 Autenticação bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|<token>|string|
+
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+
+## End-point: http://localhost:3333/favs/:product_id
+### Descrição: Favorita produto
+Method: POST
+>```
+>http://localhost:3333/favs/:product_id
+>```
+
+
+### 🔑 Autenticação bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|<token>|string|
+
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+
+## End-point: http://localhost:3333/favs/:product_id
+### Descrição: Desfavorita produto 
+Method: DELETE
+>```
+>http://localhost:3333/favs/:product_id
+>```
+
+
+### 🔑 Autenticação bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|<token>|string|
+
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+
+## End-point: http://localhost:3333/user/register
+### Descrição: Registra produto
+Method: POST
+>```
+>http://localhost:3333/user/register
+>```
+### Body (**raw**)
+
+```json
+{
+	"username": "teste",
+	"password": "teste",
+	"email": "proulx@cestoredstore.com"
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+
+## End-point: http://localhost:3333/user/login
+### Descrição: Loga usuário
+Method: POST
+>```
+>http://localhost:3333/user/login
+>```
+### Body (**raw**)
+
+```json
+{
+	"username": "teste",
+	"password": "teste"
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+
+## End-point: http://localhost:3333/user/logout
+### Descrição: Desloga usuário
+Method: POST
+>```
+>http://localhost:3333/user/logout
+>```
+
+
+### 🔑 Autenticação bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|<token>|string|
+
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+POSTMAN DOC -> https://documenter.getpostman.com/view/15227236/TzY7dDgE
