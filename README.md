@@ -98,7 +98,7 @@ Method: GET
 
 |Param|value|Type|
 |---|---|---|
-|token|<token>|string|
+|token|#token|string|
 
 
 
@@ -117,7 +117,7 @@ Method: POST
 
 |Param|value|Type|
 |---|---|---|
-|token|<token>|string|
+|token|#token|string|
 
 
 
@@ -136,7 +136,7 @@ Method: DELETE
 
 |Param|value|Type|
 |---|---|---|
-|token|<token>|string|
+|token|#token|string|
 
 
 
@@ -194,10 +194,11 @@ Method: POST
 
 |Param|value|Type|
 |---|---|---|
-|token|<token>|string|
+|token|#token|string|
 
 
 
 ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
 
 POSTMAN DOC -> https://documenter.getpostman.com/view/15227236/TzY7dDgE
+
