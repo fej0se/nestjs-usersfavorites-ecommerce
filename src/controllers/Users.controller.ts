@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UsersService } from '../services/Users.service';
 
@@ -17,6 +24,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
   @Post('/logout')
   async logout(@Req() req): Promise<any> {
     return this.UsersService.logout(req);

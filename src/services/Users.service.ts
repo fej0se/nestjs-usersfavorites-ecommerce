@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from 'src/models/User.model';
 import * as bcrypt from 'bcrypt';
@@ -14,21 +18,22 @@ export class UsersService {
 
   async create(user: User) {
     const { username, email } = user;
-    try {
-      const userExist: User = await this.userModel.findOne({
-        where: {
-          username,
-          email,
-        },
-      });
-      if (!userExist) {
-        this.userModel.create(user);
-        return { message: `usuário criado: ${user.username}` };
-      } else {
-        throw new Error('Usuário já existe');
-      }
-    } catch (err) {
-      return { message: err.message };
+    const usernameExist: User = await this.userModel.findOne({
+      where: {
+        username,
+      },
+    });
+
+    const emailExist: User = await this.userModel.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!emailExist && !usernameExist) {
+      this.userModel.create(user);
+      return { message: `usuário criado: ${user.username}` };
+    } else {
+      throw new UnprocessableEntityException();
     }
   }
 
@@ -72,7 +77,7 @@ export class UsersService {
     user.update({ isLoggedIn: false });
   }
 
-  async getStatus(req): Promise<any> {
+  async getStatus(req): Promise<boolean> {
     const id = req.user.userId;
     const iat = req.user.iat;
     const user: User = await this.userModel.findOne({
@@ -82,7 +87,7 @@ export class UsersService {
     });
     const dbData = Math.floor(user.updatedAt.getTime() / 1000);
     if (dbData > iat) {
-      return false;
+      throw new UnauthorizedException();
     } else {
       return true;
     }

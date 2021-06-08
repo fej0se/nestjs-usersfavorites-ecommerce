@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Favorite } from 'src/models/Favorite.model';
 import { ExternalAPIService } from './externalAPI.service';
@@ -37,7 +41,7 @@ export class FavoriteService {
         return { message: 'produto não existe' };
       }
     } else {
-      return { message: 'produto já está favoritado' };
+      throw new InternalServerErrorException();
     }
   }
 
@@ -49,7 +53,7 @@ export class FavoriteService {
       this.api.sendMail(favs.id_usuario);
       return { message: 'produto desfavoritado' };
     } else {
-      throw new InternalServerErrorException();
+      throw new NotFoundException();
     }
   }
 }

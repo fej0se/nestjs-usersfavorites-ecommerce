@@ -5,7 +5,6 @@ import {
   Param,
   Post,
   Req,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -26,8 +25,6 @@ export class FavoritesController {
     const estaLogado = await this.userService.getStatus(req);
     if (estaLogado) {
       return this.favService.checaFavorito(Favorite);
-    } else {
-      throw new UnauthorizedException();
     }
   }
 
@@ -39,8 +36,6 @@ export class FavoritesController {
     const estaLogado = await this.userService.getStatus(req);
     if (estaLogado) {
       return this.favService.fav(Favorite);
-    } else {
-      throw new UnauthorizedException();
     }
   }
 
@@ -51,8 +46,6 @@ export class FavoritesController {
     const estaLogado = await this.userService.getStatus(req);
     if (estaLogado) {
       return this.favService.unfav(Favorite);
-    } else {
-      throw new UnauthorizedException();
     }
   }
 }
