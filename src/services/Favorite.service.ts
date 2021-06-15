@@ -15,7 +15,7 @@ export class FavoriteService {
     private api: ExternalAPIService,
   ) {}
 
-  async checaFavorito(favs: Favorite) {
+  async checkFav(favs: Favorite) {
     const { id_usuario, product_id } = favs;
     const favorite = await this.favoriteModel.findOne({
       where: { id_usuario, product_id },
@@ -28,9 +28,9 @@ export class FavoriteService {
   }
 
   async fav(favs: Favorite) {
-    const checa = await this.checaFavorito(favs);
+    const check = await this.checkFav(favs);
 
-    if (!checa) {
+    if (!check) {
       const produtos = await this.api.getProducts();
       const produtoValido = produtos.find((prod) => prod.id == favs.product_id);
       if (produtoValido) {
@@ -46,10 +46,10 @@ export class FavoriteService {
   }
 
   async unfav(favs: Favorite) {
-    const checa = await this.checaFavorito(favs);
+    const check = await this.checkFav(favs);
 
-    if (checa) {
-      await checa.destroy();
+    if (check) {
+      await check.destroy();
       this.api.sendMail(favs.id_usuario);
       return { message: 'produto desfavoritado' };
     } else {

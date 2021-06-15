@@ -21,20 +21,20 @@ export class FavoritesController {
   @UseGuards(JwtAuthGuard)
   @Get(':product_id')
   async ehfavorite(@Param() Favorite, @Req() req) {
-    Favorite.id_usuario = req.user.userId;
-    const estaLogado = await this.userService.getStatus(req);
-    if (estaLogado) {
-      return this.favService.checaFavorito(Favorite);
+    Favorite.user_id = req.user.userId;
+    const isLoggedIn = await this.userService.getStatus(req);
+    if (isLoggedIn) {
+      return this.favService.checkFavs(Favorite);
     }
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':product_id')
   async fav(@Param() Favorite, @Req() req) {
-    Favorite.id_usuario = req.user.userId;
+    Favorite.user_id = req.user.userId;
 
-    const estaLogado = await this.userService.getStatus(req);
-    if (estaLogado) {
+    const isLoggedIn = await this.userService.getStatus(req);
+    if (isLoggedIn) {
       return this.favService.fav(Favorite);
     }
   }
@@ -42,9 +42,9 @@ export class FavoritesController {
   @UseGuards(JwtAuthGuard)
   @Delete(':product_id')
   async unfav(@Param() Favorite, @Req() req) {
-    Favorite.id_usuario = req.user.userId;
-    const estaLogado = await this.userService.getStatus(req);
-    if (estaLogado) {
+    Favorite.user_id = req.user.userId;
+    const isLoggedIn = await this.userService.getStatus(req);
+    if (isLoggedIn) {
       return this.favService.unfav(Favorite);
     }
   }

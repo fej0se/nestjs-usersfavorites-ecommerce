@@ -18,7 +18,7 @@ export class Favorite extends Model<Favorite> {
       key: 'id',
     },
   })
-  id_usuario: number;
+  user_id: number;
 
   @Column({
     type: DataType.INTEGER,
