@@ -33,7 +33,7 @@ export class ExternalAPIService {
     const produtos = await this.getProducts();
     const produtosFavoritos = await this.favModel.findAll({
       where: {
-        id_usuario: id,
+        user_id: id,
       },
     });
     produtosFavoritos.forEach((prod) => {
