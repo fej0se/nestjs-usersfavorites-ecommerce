@@ -24,7 +24,7 @@ export class FavoritesController {
     Favorite.user_id = req.user.userId;
     const isLoggedIn = await this.userService.getStatus(req);
     if (isLoggedIn) {
-      return this.favService.checkFavs(Favorite);
+      return this.favService.checkFav(Favorite);
     }
   }
 

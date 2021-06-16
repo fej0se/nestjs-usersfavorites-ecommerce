@@ -16,9 +16,9 @@ export class FavoriteService {
   ) {}
 
   async checkFav(favs: Favorite) {
-    const { id_usuario, product_id } = favs;
+    const { user_id, product_id } = favs;
     const favorite = await this.favoriteModel.findOne({
-      where: { id_usuario, product_id },
+      where: { user_id, product_id },
     });
     if (favorite) {
       return favorite;
@@ -35,7 +35,7 @@ export class FavoriteService {
       const produtoValido = produtos.find((prod) => prod.id == favs.product_id);
       if (produtoValido) {
         await this.favoriteModel.create(favs);
-        this.api.sendMail(favs.id_usuario);
+        this.api.sendMail(favs.user_id);
         return { message: 'produto favoritado' };
       } else {
         return { message: 'produto não existe' };
@@ -50,7 +50,7 @@ export class FavoriteService {
 
     if (check) {
       await check.destroy();
-      this.api.sendMail(favs.id_usuario);
+      this.api.sendMail(favs.user_id);
       return { message: 'produto desfavoritado' };
     } else {
       throw new NotFoundException();
